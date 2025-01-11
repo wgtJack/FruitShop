@@ -23,12 +23,6 @@ class DatabaseSeeder extends Seeder
         // 插入 admins 資料
         DB::table('admins')->insert([
             [
-                'account' => 'as2200991',
-                'name' => 'Admin-User-1',
-                'password' => '$2y$12$UWFlGBwwXgZsndQDCCSm0.yZlCYD1SpGu4XaihNdFwLlKddqL84te',
-                'salt' => '677ff25bac468',
-            ],
-            [
                 'account' => 'admin1234',
                 'name' => 'Admin-User-2',
                 'password' => '$2y$12$YDBuJ6H6JqxCwRveDjE/YuGaLgIPDVGRpHgZs7LzSWReXGoUPn4Di',

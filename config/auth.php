@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 return [
 
     /*
@@ -112,4 +114,28 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    // 登入設定
+    'guards' => [
+        'web' => [ // 前台守衛
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'admin' => [ // 後台守衛
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+    ],
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+    ],
 ];

@@ -5,14 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    // 取得所有訂單
+    // 顯示使用者的所有訂單
     public function index()
     {
-        $orders = Order::with('items')->get();
-        return response()->json($orders);
+        // 獲取當前登入的使用者 ID
+        $userId = Auth::id();
+
+        // 根據使用者 ID 查詢訂單
+        $orders = Order::where('user_id', $userId)->get();
+
+        // 返回訂單列表視圖，並傳遞訂單資料
+        return view('front.orders.index', compact('orders'));
+    }
+
+    // 顯示單一訂單的詳細資訊
+    public function show($orderId)
+    {
+        // 獲取當前登入的使用者 ID
+        $userId = Auth::id();
+
+        // 查詢該使用者的指定訂單
+        $order = Order::where('id', $orderId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        // 返回訂單詳細視圖
+        return view('front.orders.show', compact('order'));
     }
 
     // 新增訂單
@@ -53,13 +75,6 @@ class OrderController extends Controller
 
         // 跳轉到首頁並帶回成功訊息
         return redirect()->route('front.home')->with('success', '訂單已成功建立！');
-    }
-
-    // 顯示特定訂單
-    public function show($id)
-    {
-        $order = Order::with('items')->findOrFail($id);
-        return response()->json($order);
     }
 
     // 更新訂單

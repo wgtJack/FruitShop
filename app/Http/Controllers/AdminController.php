@@ -13,11 +13,44 @@ class AdminController extends Controller
     // 顯示登入頁面
     public function showLoginForm()
     {
+        // 如果已經登入後台，則直接導向後台首頁
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.products.index');
+        }
+
         return view('admin.login');
     }
 
-    // 處裡登入邏輯
-    public function login(Request $request) {}
+    // 處理登入邏輯
+    public function login(Request $request)
+    {
+        $request->validate([
+            'account' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $admin = Admin::where('account', $request->account)->first();
+        if ($admin && Hash::check($request->password, $admin->password)) {
+            // 使用後台守衛進行登入
+            Auth::guard('admin')->login($admin);
+
+            // 設置專屬的 Cookie
+            session()->put('cookie', config('session.cookie_admin'));
+
+            return redirect()->route('admin.products.index');
+        } else {
+            return back()->withErrors(['loginError' => '帳號或密碼錯誤']);
+        }
+    }
+
+    // 處理登出邏輯
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        session()->flush();
+
+        return redirect()->route('admin.login.form');
+    }
 
     // 處裡註冊邏輯 API
     public function create(Request $request)

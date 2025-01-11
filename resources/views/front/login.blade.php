@@ -1,51 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.front')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登入</title>
-</head>
+@section('title', '登入')
 
-<body>
-    <h1>登入頁面</h1>
+@section('content')
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">登入</h1>
 
-    <!-- 顯示錯誤訊息 -->
-    @if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <!-- 顯示註冊成功訊息 -->
+        @if (session('successMessage'))
+            <div class="alert alert-success">
+                {{ session('successMessage') }}
+            </div>
+        @endif
+
+        <!-- 顯示錯誤訊息 -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- 登入表單 -->
+        <div class="card mx-auto" style="max-width: 400px;">
+            <div class="card-body">
+                <form action="{{ route('front.login.submit') }}" method="POST">
+                    @csrf
+
+                    <!-- 電子郵件 -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">電子郵件</label>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                    </div>
+
+                    <!-- 密碼 -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">密碼</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+
+                    <!-- 提交按鈕 -->
+                    <button type="submit" class="btn btn-primary w-100">登入</button>
+                </form>
+            </div>
         </div>
-    @endif
 
-    <!-- 顯示註冊成功訊息 -->
-    @if (session('successMessage'))
-        <p>{{ session('successMessage') }}</p>
-    @endif
-
-    <!-- 登入表單 -->
-    <form action="{{ route('front.login.submit') }}" method="POST">
-        @csrf
-
-        <label for="email">電子郵件：</label>
-        <input type="email" name="email" id="email" value="{{ old('email') }}" required><br>
-
-        <label for="password">密碼：</label>
-        <input type="password" name="password" id="password" required><br>
-
-        <!-- 顯示 loginError 錯誤訊息 -->
-        @error('loginError')
-            <div style="color: red;">{{ $message }}</div>
-        @enderror
-
-        <button type="submit">登入</button>
-    </form>
-
-    <!-- 註冊超連結 -->
-    <p>還沒有帳號？<a href="/account/register">註冊</a></p>
-</body>
-
-</html>
+        <!-- 註冊連結 -->
+        <p class="text-center mt-3">
+            還沒有帳號？<a href="{{ route('front.register.form') }}">註冊</a>
+        </p>
+    </div>
+@endsection

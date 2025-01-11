@@ -12,7 +12,39 @@ class UserController extends Controller
     // 顯示登入頁面
     public function showLoginForm()
     {
+        // 如果已經登入前台，則直接導向首頁
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('front.products.index');
+        }
+
         return view('front.login');
+    }
+
+    // 處理登入邏輯
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::guard('web')->login($user);
+
+            return redirect()->route('front.products.index');
+        } else {
+            return back()->withErrors(['loginError' => '無效的電子郵件或密碼。']);
+        }
+    }
+
+    // 處理登出邏輯
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        session()->flush();
+
+        return redirect()->route('front.login.form');
     }
 
     // 顯示註冊頁面
@@ -21,48 +53,52 @@ class UserController extends Controller
         return view('front.register');
     }
 
-    // 處裡註冊邏輯
+    // 處理註冊邏輯
     public function register(Request $request)
     {
-        // 驗證輸入資料
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'user_name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'password' => 'required|string|min:6|confirmed', // 確認密碼
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // 新增使用者資料
         User::create([
             'email' => $request->email,
             'user_name' => $request->user_name,
             'phone' => $request->phone,
-            'password' => Hash::make($request->password), // 加密密碼
+            'password' => Hash::make($request->password),
             'salt' => uniqid(), // 生成隨機鹽值
         ]);
 
-        // 註冊成功後，導向登入頁面並傳遞成功訊息
         return redirect()->route('front.login.form')->with('successMessage', '註冊成功！');
     }
 
-    // 處理登入邏輯
-    public function login(Request $request)
+    // 顯示個人資訊頁面
+    public function showProfile()
     {
-        // 驗證輸入資料
+        $user = Auth::user(); // 獲取目前登入的用戶
+        return view('front.profile', compact('user'));
+    }
+
+    // 更新個人資訊
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'phone' => 'required|string|max:15',
+            'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        // 驗證使用者帳號和密碼
-        $user = User::where('email', $request->email)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            // 登入成功
-            Auth::login($user);
-            return redirect()->route('front.index');
-        } else {
-            // 登入失敗
-            return back()->withErrors(['loginError' => '無效的電子郵件或密碼。']);
+        $user->phone = $request->phone;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
         }
+
+        $user->save();
+
+        return redirect()->route('front.profile.show')->with('successMessage', '資訊已成功更新！');
     }
 }

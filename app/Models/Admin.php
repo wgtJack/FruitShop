@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable; // 提供通知功能
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; // 基礎用戶認證類
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
+    use Notifiable; // 引入通知功能的 Trait
     use HasFactory;
 
     protected $table = 'admins'; // 資料表名稱

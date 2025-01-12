@@ -80,14 +80,14 @@
                     @else
                         <!-- 已登入選項 -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('front.orders.index') }}">檢視訂單</a>
+                            <a class="nav-link" href="{{ route('front.products.index') }}">所有商品</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('front.orders.index') }}">我的訂單</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('front.profile.show') }}">個人資訊</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('front.products.index') }}">所有商品</a>
-                        </li>
+                        </li>                        
                         <li class="nav-item cart-icon">
                             <a class="nav-link" href="{{ route('front.carts.cart') }}">
                                 <i class="bi bi-cart-fill">購物車</i> <!-- 購物車圖示 -->

@@ -20,6 +20,19 @@ class UserController extends Controller
         return view('front.login');
     }
 
+    // 顯示註冊頁面
+    public function showRegisterForm()
+    {
+        return view('front.register');
+    }
+
+    // 顯示個人資訊頁面
+    public function showProfile()
+    {
+        $user = Auth::user(); // 獲取目前登入的用戶
+        return view('front.profile', compact('user'));
+    }
+
     // 處理登入邏輯
     public function login(Request $request)
     {
@@ -47,12 +60,6 @@ class UserController extends Controller
         return redirect()->route('front.login.form');
     }
 
-    // 顯示註冊頁面
-    public function showRegisterForm()
-    {
-        return view('front.register');
-    }
-
     // 處理註冊邏輯
     public function register(Request $request)
     {
@@ -71,14 +78,7 @@ class UserController extends Controller
             'salt' => uniqid(), // 生成隨機鹽值
         ]);
 
-        return redirect()->route('front.login.form')->with('successMessage', '註冊成功！');
-    }
-
-    // 顯示個人資訊頁面
-    public function showProfile()
-    {
-        $user = Auth::user(); // 獲取目前登入的用戶
-        return view('front.profile', compact('user'));
+        return redirect()->route('front.login.form')->with('success', '註冊成功！');
     }
 
     // 更新個人資訊
@@ -99,6 +99,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('front.profile.show')->with('successMessage', '資訊已成功更新！');
+        return redirect()->route('front.profile.show')->with('success', '資訊已成功更新！');
     }
 }

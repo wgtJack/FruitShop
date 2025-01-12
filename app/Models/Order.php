@@ -9,11 +9,12 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $table = 'orders'; // 對應資料表名稱
-    protected $primaryKey = 'order_id'; // 指定主鍵
-    public $timestamps = true; // 啟用時間戳
+    protected $table = 'orders';
 
-    // 可批量賦值的欄位
+    protected $primaryKey = 'order_id';
+
+    public $timestamps = true;
+
     protected $fillable = [
         'user_id',
         'total_amount',
@@ -21,9 +22,13 @@ class Order extends Model
         'address',
     ];
 
-    // 一個訂單有多個訂單項目
-    public function items()
+    public function orderStatus()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->belongsTo(OrderStatus::class, 'order_status_id', 'order_status_id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'order_id');
     }
 }

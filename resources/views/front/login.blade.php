@@ -6,10 +6,10 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">登入</h1>
 
-        <!-- 顯示註冊成功訊息 -->
-        @if (session('successMessage'))
+        <!-- 顯示成功訊息 -->
+        @if (session('success'))
             <div class="alert alert-success">
-                {{ session('successMessage') }}
+                {{ session('success') }}
             </div>
         @endif
 

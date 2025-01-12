@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         // 插入 order_statuses 資料
         DB::table('order_statuses')->insert([
-            ['status_name' => '店家已收到訂單'],
+            ['status_name' => '下訂成功'],
             ['status_name' => '配送中'],
             ['status_name' => '完成交易'],
             ['status_name' => '訂單取消'],

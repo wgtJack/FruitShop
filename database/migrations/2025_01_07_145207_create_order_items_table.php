@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             // 訂單項目
+            $table->id('order_item_id'); // 訂單項目編號
             $table->foreignId('order_id'); // 訂單編號
             $table->foreignId('product_id'); // 產品編號
             $table->unsignedInteger('quantity'); // 數量
-        
-            // 設置複合主鍵
-            $table->primary(['order_id', 'product_id']);
         });
     }
 

@@ -7,29 +7,7 @@
     <title>@yield('title', '後台') | 冠廷水果店（後台系統）</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        /* 統一 nav-link 樣式 */
-        .logout-btn {
-            background: none;
-            border: none;
-            padding: 8px 15px;
-            /* 調整按鈕內部間距，與 a 標籤一致 */
-            text-align: left;
-            /* 對齊文字 */
-            transition: color 0.3s ease;
-            /* 添加滑順的 hover 效果 */
-        }
-
-        /* Hover 效果 */
-        .logout-btn:hover {
-            color: #f8f9fa;
-            /* 白色 */
-            background-color: rgba(255, 255, 255, 0.1);
-            /* 顯示淺色背景 */
-            border-radius: 5px;
-            /* 圓角效果 */
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>

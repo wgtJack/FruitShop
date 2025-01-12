@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -21,6 +22,16 @@ class OrderController extends Controller
         return view('front.orders.index', compact('orders'));
     }
 
+    // 後台顯示所有訂單，並載入每個訂單的使用者資訊
+    public function adminIndex()
+    {
+        // 撈取所有訂單，並同時載入使用者資料
+        $orders = Order::with('user', 'orderStatus')->get();
+
+        // 傳遞訂單資料到視圖
+        return view('admin.orders.index', compact('orders'));
+    }
+
     // 顯示訂單詳細
     public function show($id)
     {
@@ -30,6 +41,15 @@ class OrderController extends Controller
             ->findOrFail($id);  // 如果找不到訂單，會丟出 404 錯誤
 
         return view('front.orders.show', compact('order'));
+    }
+
+    // 後台 show 方法
+    public function adminshow($id)
+    {
+        $order = Order::with('user', 'orderStatus')->findOrFail($id);
+        $orderStatuses = DB::table('order_statuses')->pluck('status_name', 'order_status_id'); // 獲取所有訂單狀態
+
+        return view('admin.orders.show', compact('order', 'orderStatuses'));
     }
 
     // 新增訂單
@@ -88,7 +108,21 @@ class OrderController extends Controller
             'order_status_id' => $request->input('order_status_id'),
         ]);
 
-        return redirect()->route('front.orders.show', $id)
+        return redirect()->route('front.orders.index', $id)
             ->with('success', '訂單已取消');
+    }
+
+    // 後台更新訂單
+    public function adminUpdate(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        // 更新訂單狀態
+        $order->update([
+            'order_status_id' => $request->input('order_status_id'),
+        ]);
+
+        return redirect()->route('admin.orders.index', $id)
+            ->with('success', '更改訂單狀態成功');
     }
 }

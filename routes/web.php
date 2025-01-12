@@ -60,8 +60,8 @@ Route::prefix('admin')->group(function () {
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
         // 訂單
-        Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders.index');
-        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
-        Route::patch('/orders/{id}', [OrderController::class, 'update'])->name('admin.orders.update');
+        Route::get('/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
+        Route::get('/orders/{id}', [OrderController::class, 'adminshow'])->name('admin.orders.show');
+        Route::patch('/orders/{id}', [OrderController::class, 'adminUpdate'])->name('admin.orders.update');
     });
 });

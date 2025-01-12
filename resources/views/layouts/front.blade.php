@@ -7,48 +7,7 @@
     <title>@yield('title', '前台') | 冠廷水果店</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        /* 自訂樣式：讓購物車數量的 badge 顯示為紅色泡泡 */
-        .navbar .cart-icon .badge {
-            position: absolute;
-            top: 3px;
-            right: 55px;
-            background-color: #dc3545;
-            /* 紅色背景 */
-            color: #fff;
-            /* 白色字體 */
-            border-radius: 50%;
-            /* 圓形 */
-            padding: 5px 7px;
-            /* 適當的間距 */
-            font-size: 12px;
-            /* 字體大小 */
-            min-width: 15px;
-            text-align: center;
-        }
-
-        /* 統一 nav-link 樣式 */
-        .logout-btn {
-            background: none;
-            border: none;
-            padding: 8px 15px;
-            /* 調整按鈕內部間距，與 a 標籤一致 */
-            text-align: left;
-            /* 對齊文字 */
-            transition: color 0.3s ease;
-            /* 添加滑順的 hover 效果 */
-        }
-
-        /* Hover 效果 */
-        .logout-btn:hover {
-            color: #f8f9fa;
-            /* 白色 */
-            background-color: rgba(255, 255, 255, 0.1);
-            /* 顯示淺色背景 */
-            border-radius: 5px;
-            /* 圓角效果 */
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
